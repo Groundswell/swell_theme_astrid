@@ -1,6 +1,6 @@
 - cache( 'home', expires_in: 1.hour ) do
-	- @results.each_with_index do |result, index|
-		- if @results.current_page == 1 && index == 0
+	- @articles.each_with_index do |result, index|
+		- if @articles.current_page == 1 && index == 0
 			= render 'swell_media/articles/post', media: result, args: { class: 'first-post' }
 		- else
 			= render 'swell_media/articles/post', media: result, args: {}
@@ -8,10 +8,10 @@
 	%nav.navigation.posts-navigation{:role => "navigation"}
 		%h2.screen-reader-text Posts navigation
 		.nav-links
-			- if @results.current_page < @results.total_pages
+			- if @articles.current_page < @articles.total_pages
 				.nav-previous
-					%a{ :href => swell_media.root_path( page: @results.current_page + 1 ) } Older posts
-			- if @results.current_page > 1
+					%a{ :href => swell_media.root_path( page: @articles.current_page + 1 ) } Older posts
+			- if @articles.current_page > 1
 				.nav-next
-					%a{ :href => swell_media.root_path( page: @results.current_page - 1 ) } Newer posts
+					%a{ :href => swell_media.root_path( page: @articles.current_page - 1 ) } Newer posts
 	/ .navigation

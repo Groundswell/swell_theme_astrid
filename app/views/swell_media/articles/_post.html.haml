@@ -17,9 +17,10 @@
 					%a{:href => media.url, :rel => "bookmark"}
 						%time.entry-date{:datetime => media.publish_at.strftime('%B %e, %Y')}=media.publish_at.strftime('%B %e, %Y')
 				/ .posted-on
-				%span.entry-cat
-					%span.cat-link
-						%a{:href => swell_media.category_path(media.category.slug)}=media.category.name
+				- if media.category.present?
+					%span.entry-cat
+						%span.cat-link
+							%a{:href => swell_media.category_path(media.category.slug)}=media.category.name
 				/ .entry-cat
 				-# %span.entry-like
 					%a{:href => ""}

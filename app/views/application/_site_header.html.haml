@@ -3,26 +3,26 @@
 	.container
 		.row
 			.col-md-3
-				%ul.social-icon
-					- if User.me.social_id(:twitter).present?
+				-#%ul.social-icon
+					- if User.first.social_id(:twitter).present?
 						%li
-							%a.icon-twitter{:href => "http://twitter.com/#{User.me.social_id(:twitter)}"}
+							%a.icon-twitter{:href => "http://twitter.com/#{User.first.social_id(:twitter)}"}
 								%i.fa.fa-twitter
-					- if User.me.social_id(:facebook).present?
+					- if User.first.social_id(:facebook).present?
 						%li
-							%a.icon-facebook{:href => "http://www.facebook.com/#{User.me.social_id(:facebook)}"}
+							%a.icon-facebook{:href => "http://www.facebook.com/#{User.first.social_id(:facebook)}"}
 								%i.fa.fa-facebook
-					- if User.me.social_id(:instagram).present?
+					- if User.first.social_id(:instagram).present?
 						%li
-							%a.icon-instagram{:href => "www.instagram.com/#{User.me.social_id(:instagram)}"}
+							%a.icon-instagram{:href => "www.instagram.com/#{User.first.social_id(:instagram)}"}
 								%i.fa.fa-instagram
-					- if User.me.social_id(:pinterest).present?
+					- if User.first.social_id(:pinterest).present?
 						%li
-							%a.icon-pinterest{:href => "http://www.pinterest.com/#{User.me.social_id(:pinterest)}"}
+							%a.icon-pinterest{:href => "http://www.pinterest.com/#{User.first.social_id(:pinterest)}"}
 								%i.fa.fa-pinterest
-					- if User.me.social_id(:youtube).present?
+					- if User.first.social_id(:youtube).present?
 						%li
-							%a.icon-youtube{:href => "http://www.youtube.com/channel/#{User.me.social_id(:youtube)}"}
+							%a.icon-youtube{:href => "http://www.youtube.com/channel/#{User.first.social_id(:youtube)}"}
 								%i.fa.fa-youtube-play
 					%li
 						%a{:href => "http://cloud.feedly.com/#subscription%2Ffeed%2F#{CGI.escape( swell_media.category_url( :all, format: 'rss' ) )}", :target => "blank" }
@@ -74,8 +74,8 @@
 									%a{:href => swell_media.category_path(:food)} Food
 								%li.menu-item{ class: set_css_if( class: 'current-menu-item', path: swell_media.category_path(:fitness) ) }
 									%a{:href => swell_media.category_path(:fitness)} Fitness
-								%li.menu-item{ class: set_css_if( class: 'current-menu-item', path: main_app.about_path() ) }
-									%a{:href => main_app.about_path()} About Me
+								%li.menu-item{ class: set_css_if( class: 'current-menu-item', path: '/about' ) }
+									%a{:href => '/about' } About Me
 								%li.menu-item{ class: set_css_if( class: 'current-menu-item', path: swell_media.new_contact_path() ) }
 									%a{:href => swell_media.new_contact_path()} Contact
 						/ .menu-container
