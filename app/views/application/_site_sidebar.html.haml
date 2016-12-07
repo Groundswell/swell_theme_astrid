@@ -1,0 +1,102 @@
+.site-sidebar
+	%section.widget.widget_search
+		= form_tag swell_media.category_path( :all ), method: :get, class: 'search-form' do
+			.form-group
+				%label.sr-only{:for => "search"} Search
+				= text_field_tag :q, '', :placeholder => "Search...", class: 'form-control search-field'
+			/ .form-group
+			%button.btn.btn-default.search-submit{:type => "submit"}
+				%i.fa.fa-search
+		/ .search-form
+	/ .widget_search
+	%section.widget.astrif_widget_about
+		%h2.widget-title
+			%span About
+		.about-author-container
+			.author-avatar
+				%img{:alt => User.me.full_name, :src => User.me.avatar_url, 'data-pin-nopin' => 1 }/
+			.author-info
+				%p=User.me.short_bio
+			-# .author-signature{:style => "background-image: url('#{image_path("theme/img/astrif-signature.png")}');"}
+		/ .about-author-container
+	/ .astrif_widget_about
+	%section.widget.astrif_widget_follow_me
+		%h2.widget-title
+			%span Follow me
+		.follow-me
+			%ul.social-icon.social-icon-color
+				- if User.me.social_id(:twitter).present?
+					%li
+						%a.icon-twitter{:href => "http://twitter.com/#{User.me.social_id(:twitter)}"}
+							%i.fa.fa-twitter
+				- if User.me.social_id(:facebook).present?
+					%li
+						%a.icon-facebook{:href => "http://www.facebook.com/#{User.me.social_id(:facebook)}"}
+							%i.fa.fa-facebook
+				- if User.me.social_id(:instagram).present?
+					%li
+						%a.icon-instagram{:href => "www.instagram.com/#{User.me.social_id(:instagram)}"}
+							%i.fa.fa-instagram
+				- if User.me.social_id(:pinterest).present?
+					%li
+						%a.icon-pinterest{:href => "http://www.pinterest.com/#{User.me.social_id(:pinterest)}"}
+							%i.fa.fa-pinterest
+				- if User.me.social_id(:youtube).present?
+					%li
+						%a.icon-youtube{:href => "http://www.youtube.com/channel/#{User.me.social_id(:youtube)}"}
+							%i.fa.fa-youtube-play
+				%li
+					%a{:href => "http://cloud.feedly.com/#subscription%2Ffeed%2F#{CGI.escape( swell_media.category_url( :all, format: 'rss' ) )}", :target => "blank" }
+						%img#feedlyFollow{:alt => "follow us in feedly", :src => "http://s3.feedly.com/img/follows/feedly-follow-logo-white_2x.png", style: 'height: 1.3em;'}><
+
+		/ .follow-me
+	/ .astrif_widget_follow_me
+	- if ( popular_media_results = SwellMedia::Article.published.order(score: :desc).limit(5) ).present?
+		%section.widget.astrif_widget_popular_entries
+			%h2.widget-title
+				%span Popular Posts
+			%ul
+				- popular_media_results.each do |popular_media|
+					%li
+						%a.popular-entry-thumbnail{:href => popular_media.url}
+							%img{:alt => popular_media.title, :src => popular_media.avatar}/
+						%span.popular-entry-title
+							%a.popular-entry-title-link{:href => popular_media.url, :rel => "bookmark"}=popular_media.title
+							%span.popular-entry-date=popular_media.publish_at.strftime('%B %e, %Y')
+		/ .astrif_widget_popular_entries
+	-#
+		%section.widget.widget_text
+			%h2.widget-title
+				%span Advertisement
+			.textwidget
+				%a{:href => "index.html"}
+					%img{:alt => "buy astrif now", :src => image_path("theme/img/astrif-sidebar-banner.jpg")}/
+		/ .astrif_widget_text
+	%section.widget.widget_recent_entries
+		%h2.widget-title
+			%span Recent Posts
+		%ul
+			- SwellMedia::Article.published.order(created_at: :desc).each do |media|
+				%li
+					%a{:href => media.url}=media.title
+					%span.post-date=media.publish_at.strftime('%B %e, %Y')
+	/ .widget_recent_entries
+	-#
+		%section.widget.widget_categories
+			%h2.widget-title
+				%span Categories
+			%ul
+				- SwellMedia::Category.active.order( '(seq IS NOT NULL) DESC', seq: :asc, slug: :asc ).each do |category|
+					%li
+						%a{:href => swell_media.category_path( category.slug )}=category.name
+		/ .widget_categories
+	%section.widget.widget_tag_cloud
+		%h2.widget-title
+			%span Tags
+		.tagcloud
+			- SwellMedia::Article.published.media_tag_cloud( limit: 7 ).each do |tag,count|
+				%a{:href => swell_media.category_path( :all, tag: tag ) }
+					= tag
+					%span=count
+	/ .widget_tag_cloud
+/ .site-sidebar
